@@ -2,6 +2,7 @@ import click
 import numpy as np
 from itertools import combinations
 
+## for debugging...
 #arr = np.sort(np.random.choice(np.arange(1, 20), size = 6, replace = False))
 #arr = np.array([5,  9, 10, 11, 16], dtype = int) # for test
 #arr = np.array([1,  3,  8, 14, 15], dtype = int) # for test
@@ -64,6 +65,8 @@ def main(target, thres):
     print('numbers that found by combination patterns:', nums)
     print(f'maximum size: {max(counts)}')
 
+## for debugging...
 #main(arr)
+
 if __name__ == "__main__":
     main()

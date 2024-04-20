@@ -1,15 +1,27 @@
+import click 
 import numpy as np
 from itertools import combinations
 
-arr = np.sort(np.random.choice(np.arange(1, 20), size = 5, replace = False))
+#arr = np.sort(np.random.choice(np.arange(1, 20), size = 6, replace = False))
 #arr = np.array([5,  9, 10, 11, 16], dtype = int) # for test
-arr = np.array([1,  3,  8, 14, 15], dtype = int) # for test
-print('ori arr:', arr)
+#arr = np.array([1,  3,  8, 14, 15], dtype = int) # for test
 
-def func(target, thres = 3):
+@click.command()
+@click.option('-tg', '--target', default = '5,9,10,11,16')
+@click.option('-tr', '--thres', default = 3, type = int)
+def main(target, thres):
+    if len(target) == 0: 
+        print('nothing in target array')
+        return
+    if thres != 3:
+        print('please use 3 for now...')
+        return
+
+    target = np.asarray(target.split(',')).astype(int)    
 
     ## array that contains possible residuals by threshold
     thres_resi = np.arange(thres, dtype = int)
+    print('threshold:', thres)
     print('possible residuals:', thres_resi) 
 
     ## find sum of combination of 2 that not makes threshold. 
@@ -22,6 +34,7 @@ def func(target, thres = 3):
     
     ## make combination of target array
     tg_coms = np.asarray(list(combinations(target, 2))).astype(int)
+    print('original target array:', target)
     print('combination of target array:', tg_coms)
 
     ## convert number in combination array to just residual 
@@ -39,7 +52,7 @@ def func(target, thres = 3):
     for c in range(tr_pat_len):
         num_per_pat = np.unique(tg_coms[diff_bool[:, c]])
         zero_check = num_per_pat % 3 == 0
-        if np.count_nonzero(zero_check) > 1: # not satisfying soultion...
+        if np.count_nonzero(zero_check) > 1: # not satisfying solution...
             zero_val = num_per_pat[zero_check]
             for z in range(len(zero_val)):
                 num_per_pat_v2 = np.append(num_per_pat[~zero_check], zero_val[z])
@@ -51,5 +64,6 @@ def func(target, thres = 3):
     print('numbers that found by combination patterns:', nums)
     print(f'maximum size: {max(counts)}')
 
-
-func(arr)
+#main(arr)
+if __name__ == "__main__":
+    main()

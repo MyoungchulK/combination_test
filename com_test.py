@@ -17,7 +17,6 @@ def main(target, thres):
     if thres % 2 != 1 or thres < 2:
         print('please use odd number and bigger than 1 for now...')
         return
-
     target = np.asarray(target.split(',')).astype(int)    
 
     ## array that contains possible residuals by threshold
@@ -42,9 +41,8 @@ def main(target, thres):
     print('residual of combination of target array:', tg_resis)
 
     ## find the index of combinations that match the 'each' pattern
-    tg_resi_sort = np.sort(tg_resis, axis = 1)
-    pat_diff = tg_resi_sort[:, np.newaxis, :] - tr_pats[np.newaxis, :, :]
-    diff_bool = np.nansum(pat_diff == 0, axis = 2) == 2 
+    pat_diff = np.sort(tg_resis, axis = 1)[:, np.newaxis, :] == tr_pats[np.newaxis, :, :]
+    diff_bool = np.count_nonzero(pat_diff, axis = 2) == 2 
 
     ## find the actual numbers that make the survived combination
     nums = []

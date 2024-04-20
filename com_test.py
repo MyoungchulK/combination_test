@@ -14,8 +14,8 @@ def main(target, thres):
     if len(target) == 0: 
         print('nothing in target array')
         return
-    if thres != 3:
-        print('please use 3 for now...')
+    if thres % 2 != 1 or thres < 2:
+        print('please use odd number and bigger than 1 for now...')
         return
 
     target = np.asarray(target.split(',')).astype(int)    
@@ -30,7 +30,6 @@ def main(target, thres):
     tr_coms = np.asarray(list(combinations(thres_resi, 2))).astype(int)
     tr_bool = np.nansum(tr_coms, axis = 1) != thres
     tr_pats = tr_coms[tr_bool]
-    tr_pat_len = len(tr_pats)
     print('combination patterns:', tr_pats)
     
     ## make combination of target array
@@ -50,7 +49,7 @@ def main(target, thres):
     ## find the actual numbers that make the survived combination
     nums = []
     counts = []
-    for c in range(tr_pat_len):
+    for c in range(diff_bool.shape[1]):
         num_per_pat = np.unique(tg_coms[diff_bool[:, c]])
         zero_check = num_per_pat % 3 == 0
         if np.count_nonzero(zero_check) > 1: # not satisfying solution...

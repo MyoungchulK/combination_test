@@ -38,5 +38,43 @@ def main(target, thres):
     print('size of the all subset arrays:', pat_count)
     print('maximum size:', np.nanmax(pat_count))
 
+def main_2(target, thres):
+    if len(target) == 0:
+        print('nothing in target array')
+        return
+    if thres % 2 != 1 or thres < 2:
+        print('please use odd number and bigger than 1 for now...')
+        return
+
+    thres_resi = [th for th in range(thres)]
+    tr_pats = []
+    for c in range(thres_resi[0], thres_resi[-1] + 1):
+        for d in range(c + 1, thres_resi[-1] + 1):
+            if (c + d) == thres: continue
+            tr_pats.append([c, d])
+    print('threshold:', thres)
+    print('residual patterns:', tr_pats)
+
+    target = list(map(int, target.split(',')))
+    tg_resis = [tg % thres for tg in target]
+    print('original target array:', target)
+    print('residual target array:', tg_resis)
+
+    num_zeros = tg_resis.count(0) - 1
+    pat_count = []
+    for pat in tr_pats:
+        counts = 0
+        for indi in pat:
+            counts += tg_resis.count(indi)
+            if indi == 0: counts -= num_zeros
+        pat_count.append(counts)
+    print('size of the all subset arrays:', pat_count)
+    print('maximum size:', max(pat_count)) 
+
 if __name__ == "__main__":
     main()
+    #main_2('5,9,10,11,16', 3)
+
+
+
+
